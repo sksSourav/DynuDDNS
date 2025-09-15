@@ -2,18 +2,13 @@ FROM alpine:3.20
 
 RUN apk add --no-cache curl bash
 
-# Environment variables
-ENV API_KEY=""
-ENV HOSTNAME=""
-ENV INTERVAL=300
+WORKDIR /app
 
-# Script to update Dynu DDNS
-RUN echo '#!/bin/bash\n\
-while true; do\n\
-  echo "Updating DNS for $HOSTNAME..."\n\
-  curl -s "https://api.dynu.com/nic/update?hostname=$HOSTNAME&myip=$(curl -s ifconfig.me)&password=$API_KEY"\n\
-  echo "Sleeping $INTERVAL seconds..."\n\
-  sleep $INTERVAL\n\
-done' > /dynu_ddns_update.sh && chmod +x /dynu_ddns_update.sh
+COPY dynu_ddns_update.sh /app/dynu_ddns_update.sh
+RUN chmod +x /app/dynu_ddns_update.sh
 
-CMD ["/dynu_ddns_update.sh"]
+ENV HOSTNAME="" \
+    API_KEY="" \
+    INTERVAL=300
+
+ENTRYPOINT ["/bin/sh", "-c", "/app/dynu_ddns_update.sh ${HOSTNAME} ${API_KEY} ${INTERVAL}"]
