@@ -7,8 +7,12 @@ WORKDIR /app
 COPY dynu_ddns_update.sh /app/dynu_ddns_update.sh
 RUN chmod +x /app/dynu_ddns_update.sh
 
-ENV HOSTNAME="" \
-    API_KEY="" \
+ENV USERNAME="" \
+    PASSWORD="" \
+    HOSTNAME="" \
     INTERVAL=300
 
-ENTRYPOINT ["/bin/sh", "-c", "/app/dynu_ddns_update.sh ${HOSTNAME} ${API_KEY} ${INTERVAL}"]
+# Expose ports
+EXPOSE 80
+
+ENTRYPOINT ["/bin/sh", "-c", "/app/dynu_ddns_update.sh ${USERNAME} ${PASSWORD} ${HOSTNAME} ${INTERVAL}"]
