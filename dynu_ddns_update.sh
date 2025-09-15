@@ -5,7 +5,7 @@ PASSWORD="$2"
 HOSTNAME="$3"
 INTERVAL="${4:-300}"   # default 300s if not given
 
-if [[ -z "$HOSTNAME" || -z "$API_KEY" ]]; then
+if [[ -z "$HOSTNAME" || -z "$PASSWORD" || -z "$HOSTNAME" ]]; then
   echo "Usage: $0 <USERNAME> <PASSWORD> <HOSTNAME> [INTERVAL]"
   exit 1
 fi
